@@ -1,19 +1,19 @@
 .sudoku{
-  max-height: 100vh;
-  height: 700px;
+  height: 94vh;
   width: 100%;
   display: flex;
-  background: #333;
+  background: radial-gradient(#3d3337, #111);
 }
 .gameboard{
   position: relative;
   display: flex;
   flex-direction: column;
-  flex: 0 0 auto;
   width: 700px;
-  height: auto;
+  flex: 0 0 auto;
+  height: 700px;
+  max-height: 700px;
   justify-content: center;
-  margin: 50px;
+  margin: auto 0;
   border-radius: 10px;
   margin-left: 5%;
   border: solid 9px #aca;
@@ -29,8 +29,8 @@
 }
 
 .tile{
-  height: 100%;
   width: 11.11%;
+  flex: 0 0 11.11%;
   max-height: 100px;
   max-width: 100px;
   background: #e5e5e5;
@@ -42,7 +42,6 @@
   color: #333;
   box-shadow: 0px 0px 0px 1px #5d5357;
   transition: all 100ms ease;
-
 }
 
 .border-left{
@@ -62,8 +61,8 @@
 }
 
 .tile:hover{
-  color: #0af;
-  background: rgba(220,255,150, 1);
+  color: #eed;
+  background: rgba(0,170,210, 1);
   font-weight: 600;
   font-size: 36px;
 }
@@ -78,7 +77,7 @@
 }
 
 .tile-content.selected{
-  background: #0ac;
+  background: #0ce;
   color: #fff;
 
   font-size: 36px;
