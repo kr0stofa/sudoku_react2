@@ -8,7 +8,6 @@ const getTileFromId = (id: number) => [id % 100, Math.floor(id / 100)];
 
 interface BoardProps {
   currBoard: Board;
-  setCurrBoard: (b: Board) => void;
   hoveredTile: number;
   setHoveredTile: (t: number) => void;
   selectedTile: number;
@@ -17,24 +16,11 @@ interface BoardProps {
 
 const GameBoard = ({
   currBoard,
-  setCurrBoard,
   hoveredTile,
   setHoveredTile,
   selectedTile,
   setSelectedTile,
 }: BoardProps) => {
-  const clearNumber = (x: number, y: number) => {
-    if (!currBoard) return;
-    setCurrBoard(currBoard.slice());
-  };
-  const setNumber = (x: number, y: number) => {
-    return (val: number) => {
-      const nb = currBoard.slice();
-      nb[y][x] = val;
-      setCurrBoard(nb);
-    };
-  };
-
   const handleHover = (x: number, y: number) => {
     return () => {
       setHoveredTile(getTileID(x, y));
@@ -55,7 +41,6 @@ const GameBoard = ({
   const handleClick = (x: number, y: number) => {
     return () => {
       setSelectedTile(getTileID(x, y));
-      setNumber(x, y)(Math.round(1 + Math.random() * 8));
     };
   };
 
