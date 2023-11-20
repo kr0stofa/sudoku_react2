@@ -62,6 +62,7 @@
   cursor:pointer;
   user-select: none;
   font-size: 32px;
+  font-weight: 800;
   margin: 0.1px;
   border-radius: 1px;
   color: #333;
@@ -104,7 +105,7 @@
 .tile-content.selected{
   background: #0ce;
   color: #fff;
-  border: solid 2px #f55;
+  border: solid 2px #b66;
   width: 99%;
   height: 99%;
   font-size: 36px;

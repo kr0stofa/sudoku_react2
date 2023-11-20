@@ -3,6 +3,7 @@ import GameBoard from "./GameBoard";
 import { Action, AvailBoard, Board } from "./types";
 import "./sudoku.css";
 import Numpad from "./Numpad";
+import { puzzles } from "./puzzles";
 
 const getTileID = (x: number, y: number) => y * 100 + x;
 const getTileFromId = (id: number) => [id % 100, Math.floor(id / 100)];
@@ -230,6 +231,10 @@ const Sudoku = () => {
     updateValidBoard(currBoard);
     updateAvailBoard(currBoard);
   }, [updateValidBoard, updateAvailBoard, currBoard]);
+
+  useEffect(() => {
+    setCurrBoard(puzzles.medium);
+  }, [setCurrBoard]);
 
   const boardProps = {
     currBoard,
