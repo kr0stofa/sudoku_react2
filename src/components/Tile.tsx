@@ -5,6 +5,7 @@ interface TileProps {
   x: number;
   y: number;
   value: number;
+  isValid: boolean;
   isSelected: boolean;
   isHighlighted: boolean;
   onClick: () => void;
@@ -17,6 +18,7 @@ const Tile = ({
   y,
   value,
   onClick,
+  isValid,
   isSelected,
   isHighlighted,
   onHover,
@@ -41,7 +43,7 @@ const Tile = ({
       <span
         className={`tile-content ${isSelected ? "selected" : ""} ${
           isHighlighted ? "highlight" : ""
-        }`}
+        } ${!isValid ? "invalid" : ""}`}
       >
         {value > 0 ? value : ""}
       </span>

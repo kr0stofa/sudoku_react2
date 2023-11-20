@@ -8,18 +8,20 @@ const getTileFromId = (id: number) => [id % 100, Math.floor(id / 100)];
 
 interface BoardProps {
   currBoard: Board;
+  validBoard: Board;
   hoveredTile: number;
   setHoveredTile: (t: number) => void;
   selectedTile: number;
-  setSelectedTile: (t: number) => void;
+  chooseSelectedTile: (t: number) => void;
 }
 
 const GameBoard = ({
   currBoard,
+  validBoard,
   hoveredTile,
   setHoveredTile,
   selectedTile,
-  setSelectedTile,
+  chooseSelectedTile,
 }: BoardProps) => {
   const handleHover = (x: number, y: number) => {
     return () => {
@@ -40,7 +42,7 @@ const GameBoard = ({
 
   const handleClick = (x: number, y: number) => {
     return () => {
-      setSelectedTile(getTileID(x, y));
+      chooseSelectedTile(getTileID(x, y));
     };
   };
 
@@ -54,6 +56,7 @@ const GameBoard = ({
               x={x}
               y={y}
               value={v}
+              isValid={!!validBoard[y][x]}
               isHighlighted={isHighlighted(x, y)}
               onHover={handleHover(x, y)}
               onHoverEnd={handleHoverEnd(x, y)}
