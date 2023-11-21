@@ -1,57 +1,53 @@
-.numpad{
+.numpad {
   position: relative;
-  height: 32vh;
-  width: 32vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  aspect-ratio: 1/1;
-}
-
-.num-grid{
-  position: relative;
+  height: 38vh;
+  width: 35vh;
+  margin: 2vh auto;
   display: flex;
   flex-wrap: wrap;
-  width: 100%;
-  height: 100%;
+  background: #f2f2f2;
+  flex-direction: column;
   justify-content: center;
   align-content: center;
   align-items: center;
-  background: #151111;
-  border-radius: 5%;
   border: solid 1px #058;
-  box-shadow: 0 0 10px 0 #07a;
-  padding:25px 5px;
+  padding: 25px 5px;
+  aspect-ratio: 1/1;
 }
 
-.number{
-  width: 24%;
-  height: 32%;
+.number {
+  width: 75px;
+  height: 75px;
   margin: 7px 6px;
-  border: solid 1px #000;
-  border-radius: 15px;
+  border: solid 1px #888;
+  border-radius: 50%;
   font-size: 40px;
   font-weight: 700;
   font-family: Arial, Helvetica, sans-serif;
-  background: #fff;
+  opacity: 0.75;
   user-select: none;
   cursor: pointer;
+  color: #212123;
+  transition: all 200ms ease;
 }
 
-.number:hover{
+.number:hover {
+  background: #00b6a8;
+  opacity: 0.8;
   color: #fff;
-  background: rgba(0,170,210, 0.95);
+  border: solid 1px #555;
 }
 
-.number.highlight{
-  color: #eee;
-  background: #249;
-  border: solid 2px #ddd;
+.number.highlight {
+  background: #46c7e6;
+  opacity: 1;
+  border: solid 1px #111;
   pointer-events: none;
   cursor: none;
+  color: #212121;
 }
 
-.number.badnum{
-  color: #a00;
-  background: #777;
+.number.badnum {
+  color: #a33;
+  background: #aaa;
 }

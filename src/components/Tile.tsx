@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import "./sudoku.css";
 
 interface TileProps {
@@ -13,7 +13,7 @@ interface TileProps {
   onHoverEnd: () => void;
 }
 
-const Tile = ({
+const Tile = memo(function Tile({
   x,
   y,
   value,
@@ -23,7 +23,7 @@ const Tile = ({
   isHighlighted,
   onHover,
   onHoverEnd,
-}: TileProps) => {
+}: TileProps) {
   const borderLeft = x % 3 === 0;
   const borderTop = y % 3 === 0;
 
@@ -40,15 +40,18 @@ const Tile = ({
       onClick={onClick}
       className={`tile ${getBordersClassNames()}`}
     >
-      <span
+      <div
         className={`tile-content ${isSelected ? "selected" : ""} ${
           isHighlighted ? "highlight" : ""
         } ${!isValid ? "invalid" : ""}`}
       >
-        {value > 0 ? value : ""}
-      </span>
+        <div className={`tile-number ${value === 0 ? "no-val" : ""}`}>
+          {value > 0 ? value : ""}
+        </div>
+      </div>
     </div>
   );
-};
+});
 
+// Memoize Tile
 export default Tile;
