@@ -1,5 +1,8 @@
 import { Action, Board, AvailBoard } from "./types";
 
+export const isInvalidCoords = (x: number, y: number) =>
+  x > 8 || y > 8 || x < 0 || y < 0;
+
 export const getTileID = (x: number, y: number) => y * 100 + x;
 export const getTileFromId = (id: number) => [id % 100, Math.floor(id / 100)];
 
@@ -20,8 +23,17 @@ export const isBoardFilled = (b: Board) => {
 export const getAvailableNumbers = (x: number, y: number, b: Board) => {
   const avail = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   const unavail = new Map<number, boolean>();
-  b[y].forEach((v: number) => unavail.set(v, true));
-  b.forEach((r: Array<number>) => unavail.set(r[x], true));
+  b[y].forEach((v: number, tx: number) => {
+    if (tx !== x) {
+      unavail.set(v, true);
+    }
+  });
+
+  b.forEach((r: Array<number>, ty: number) => {
+    if (ty !== y) {
+      unavail.set(r[x], true);
+    }
+  });
 
   if (unavail.set.length === 9) {
     return [];
@@ -42,7 +54,13 @@ export const getAvailableNumbers = (x: number, y: number, b: Board) => {
     boxRows = [3, 4, 5];
   }
 
-  boxRows.forEach((y) => boxCols.forEach((x) => unavail.set(b[y][x], true)));
+  boxRows.forEach((by) =>
+    boxCols.forEach((bx) => {
+      if (by !== y || bx !== x) {
+        unavail.set(b[by][bx], true);
+      }
+    })
+  );
 
   return avail.filter((n) => !unavail.has(n));
 };

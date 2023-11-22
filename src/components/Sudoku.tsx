@@ -2,15 +2,18 @@ import React, { memo, useCallback, useEffect, useState } from "react";
 import GameBoard from "./GameBoard";
 import { Board } from "./types";
 import "./sudoku.css";
+import "./ui.css";
 import Numpad from "./Numpad";
 import { puzzles } from "./puzzles";
 import {
   getAvailableNumbersById,
   getBestMove,
   getTileFromId,
+  getTileID,
   getTileValue,
   getTileValueById,
   isBoardFilled,
+  isInvalidCoords,
 } from "./game-logic";
 
 const ROWS = 9;
@@ -18,11 +21,6 @@ const COLS = 9;
 
 const getEmptyBoard = () =>
   new Array(ROWS).fill(null).map(() => new Array(COLS).fill(0)) as Board;
-
-function useForceUpdate() {
-  const [, setToggle] = useState(false);
-  return () => setToggle((toggle) => !toggle);
-}
 
 const Sudoku = () => {
   const [isAutosolving, setAutosolving] = useState<boolean>(false);
@@ -109,9 +107,9 @@ const Sudoku = () => {
     return nb;
   };
 
-  // const clearNumber = (x: number, y: number) => {
-  //   setNumber(x, y, 0);
-  // };
+  const clearNumber = (x: number, y: number, b: Board) => {
+    setNumber(x, y, 0, b);
+  };
 
   const handleSetValue = (tileId: number, val: number, b: Board) => {
     if (tileId < 0) {
@@ -133,7 +131,7 @@ const Sudoku = () => {
     return setNumber(x, y, val, b);
   };
 
-  const chooseSelectedTile = (id: number) => {
+  const handleSelectTile = (id: number) => {
     setSelectedTile(id);
     setCurrAvailNums(getAvailableNumbersById(id, currBoard));
   };
@@ -146,7 +144,7 @@ const Sudoku = () => {
 
     const { tileId, val } = getBestMove(board);
 
-    chooseSelectedTile(tileId);
+    handleSelectTile(tileId);
     return handleSetValue(tileId, val, board);
   };
 
@@ -191,14 +189,76 @@ const Sudoku = () => {
         newPuzzle = puzzles.easy;
     }
 
-    setSelectedTile(-1);
+    handleSelectTile(-1);
     setCurrBoard(newPuzzle);
+  };
+
+  // ==================== Keyboard handlers ====================
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    const { key } = e;
+    const [x, y] = getTileFromId(selectedTile);
+    let [nx, ny] = [-1, -1];
+
+    let newVal = -1;
+
+    switch (key) {
+      case "w":
+      case "ArrowUp":
+        [nx, ny] = [x, y - 1];
+        break;
+
+      case "s":
+      case "ArrowDown":
+        [nx, ny] = [x, y + 1];
+        break;
+      case "a":
+      case "ArrowLeft":
+        [nx, ny] = [x - 1, y];
+
+        break;
+      case "d":
+      case "ArrowRight":
+        [nx, ny] = [x + 1, y];
+        break;
+
+      case "0":
+      case "Escape":
+      case "Backspace":
+        clearNumber(x, y, currBoard);
+        break;
+
+      default:
+        const n = parseInt(key);
+        console.log("key", key, n, !!n);
+        if (n) {
+          newVal = n;
+        }
+        break;
+    }
+
+    if (nx > 0) {
+      // A move
+      if (isInvalidCoords(nx, ny)) {
+        return;
+      }
+
+      const id = getTileID(nx, ny);
+      handleSelectTile(id);
+      setHoveredTile(id);
+    }
+
+    if (newVal > -1) {
+      // A number
+      console.log("set val", newVal);
+      handleSetValue(selectedTile, newVal, currBoard);
+    }
   };
 
   // ==================== Hooks ====================
   // Update validBoard whenever currBoard changes
   useEffect(() => {
-    if (!isAutosolving) {
+    if (!isAutosolving || true) {
       updateValidBoard(currBoard);
     }
   }, [isAutosolving, updateValidBoard, currBoard]);
@@ -211,13 +271,13 @@ const Sudoku = () => {
     getTileValue: (x: number, y: number) => getTileValue(x, y, currBoard),
     validBoard,
     selectedTile,
-    chooseSelectedTile,
+    handleSelectTile,
     hoveredTile,
     setHoveredTile,
   };
 
   return (
-    <div className="sudoku">
+    <div tabIndex={0} className="sudoku" onKeyDown={handleKeyDown}>
       <GameBoard {...boardProps} />
       <div className="actions-group">
         <div className="puzzle-select">

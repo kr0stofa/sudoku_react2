@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React from "react";
 import Tile from "./Tile";
 import "./sudoku.css";
 import type { Board } from "./types";
@@ -10,15 +10,12 @@ interface BoardProps {
   hoveredTile: number;
   setHoveredTile: (t: number) => void;
   selectedTile: number;
-  chooseSelectedTile: (t: number) => void;
+  handleSelectTile: (t: number) => void;
 }
 
 const DEFAULT_BOARD = new Array(9)
   .fill(null)
   .map((_, i) => new Array(9).fill(null));
-
-const isInvalidCoords = (x: number, y: number) =>
-  x > 8 || y > 8 || x < 0 || y < 0;
 
 const GameBoard = ({
   getTileValue,
@@ -26,7 +23,7 @@ const GameBoard = ({
   hoveredTile,
   setHoveredTile,
   selectedTile,
-  chooseSelectedTile,
+  handleSelectTile,
 }: BoardProps) => {
   const handleHover = (x: number, y: number) => {
     return () => {
@@ -65,50 +62,12 @@ const GameBoard = ({
 
   const handleClick = (x: number, y: number) => {
     return () => {
-      chooseSelectedTile(getTileID(x, y));
+      handleSelectTile(getTileID(x, y));
     };
   };
 
-  // ==================== Keyboard handlers ====================
-
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    const { key } = e;
-    const [x, y] = getTileFromId(selectedTile);
-    let [nx, ny] = [-1, -1];
-
-    switch (key) {
-      case "w":
-      case "ArrowUp":
-        [nx, ny] = [x, y - 1];
-        break;
-
-      case "s":
-      case "ArrowDown":
-        [nx, ny] = [x, y + 1];
-        break;
-      case "a":
-      case "ArrowLeft":
-        [nx, ny] = [x - 1, y];
-
-        break;
-      case "d":
-      case "ArrowRight":
-        [nx, ny] = [x + 1, y];
-        break;
-
-      default:
-        console.log("key", key);
-    }
-
-    if (isInvalidCoords(nx, ny)) {
-      return;
-    }
-    handleHover(nx, ny)();
-    handleClick(nx, ny)();
-  };
-
   return (
-    <div tabIndex={0} className="gameboard" onKeyDown={handleKeyDown}>
+    <div className="gameboard">
       {DEFAULT_BOARD.map((r, y) => (
         <div className="row" key={`row-${y}`}>
           {r.map((v, x) => (

@@ -11,31 +11,38 @@
   align-content: center;
   align-items: center;
   border: solid 1px #058;
-  padding: 25px 5px;
-  aspect-ratio: 1/1;
+  padding: 4% 2.5%;
 }
 
 .number {
-  width: 75px;
-  height: 75px;
-  margin: 7px 6px;
-  border: solid 1px #888;
+  width: 8.5vh;
+  height: 8.5vh;
+  margin: 3% 2%;
   border-radius: 50%;
   font-size: 40px;
   font-weight: 700;
-  font-family: Arial, Helvetica, sans-serif;
+  border: none;
   opacity: 0.75;
   user-select: none;
   cursor: pointer;
+  border: 1px #888 solid;
+  transition: color, background-color 200ms ease;
   color: #212123;
-  transition: all 200ms ease;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: calc(2px + 6vh);
 }
 
 .number:hover {
   background: #00b6a8;
   opacity: 0.8;
-  color: #fff;
+  color: #e1e1e0;
   border: solid 1px #555;
+}
+
+.number.badnum {
+  color: #a33;
+  background: #ddd;
+  border: none;
 }
 
 .number.highlight {
@@ -44,10 +51,9 @@
   border: solid 1px #111;
   pointer-events: none;
   cursor: none;
-  color: #212121;
+  color: #fff;
 }
 
-.number.badnum {
+.number.highlight.badnum {
   color: #a33;
-  background: #aaa;
 }

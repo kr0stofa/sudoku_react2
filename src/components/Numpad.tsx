@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import "./numpad.css";
 interface Props {
   onSet: (n: number) => void;
@@ -23,4 +23,4 @@ const Numpad = ({ onSet, currVal, availableNums }: Props) => {
   );
 };
 
-export default Numpad;
+export default memo(Numpad);
