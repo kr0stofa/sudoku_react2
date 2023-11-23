@@ -7,6 +7,7 @@ import { getTileID, getTileFromId } from "./game-logic";
 interface BoardProps {
   getTileValue: (x: number, y: number) => number;
   validBoard: Board;
+  fixedBoardNumbers: Board;
   hoveredTile: number;
   setHoveredTile: (t: number) => void;
   selectedTile: number;
@@ -23,6 +24,7 @@ const GameBoard = ({
   hoveredTile,
   setHoveredTile,
   selectedTile,
+  fixedBoardNumbers,
   handleSelectTile,
 }: BoardProps) => {
   const handleHover = (x: number, y: number) => {
@@ -36,6 +38,8 @@ const GameBoard = ({
       setHoveredTile(-1);
     };
   };
+
+  const isHovered = (x: number, y: number) => hoveredTile === getTileID(x, y);
 
   const isHighlighted = (x: number, y: number) => {
     const [hx, hy] = getTileFromId(hoveredTile);
@@ -66,23 +70,26 @@ const GameBoard = ({
     };
   };
 
+  const getTileProps = (x: number, y: number) => ({
+    x: x,
+    y: y,
+    value: getTileValue(x, y),
+    isValid: !!validBoard[y][x],
+    isFocused: isHovered(x, y),
+    isFixed: fixedBoardNumbers[y][x] > 0,
+    isHighlighted: isHighlighted(x, y),
+    onHover: handleHover(x, y),
+    onHoverEnd: handleHoverEnd(x, y),
+    isSelected: getTileID(x, y) === selectedTile,
+    onClick: handleClick(x, y),
+  });
+
   return (
     <div className="gameboard">
       {DEFAULT_BOARD.map((r, y) => (
         <div className="row" key={`row-${y}`}>
           {r.map((v, x) => (
-            <Tile
-              key={`t-${getTileID(x, y)}`}
-              x={x}
-              y={y}
-              value={getTileValue(x, y)}
-              isValid={!!validBoard[y][x]}
-              isHighlighted={isHighlighted(x, y)}
-              onHover={handleHover(x, y)}
-              onHoverEnd={handleHoverEnd(x, y)}
-              isSelected={getTileID(x, y) === selectedTile}
-              onClick={handleClick(x, y)}
-            />
+            <Tile key={`t-${getTileID(x, y)}`} {...getTileProps(x, y)} />
           ))}
         </div>
       ))}

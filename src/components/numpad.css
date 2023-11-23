@@ -25,18 +25,18 @@
   opacity: 0.75;
   user-select: none;
   cursor: pointer;
-  border: 1px #888 solid;
+  border: 1px #555 solid;
   transition: color, background-color 200ms ease;
-  color: #212123;
+  color: #414143;
   font-family: Arial, Helvetica, sans-serif;
   font-size: calc(2px + 6vh);
 }
 
 .number:hover {
-  background: #00b6a8;
-  opacity: 0.8;
-  color: #e1e1e0;
-  border: solid 1px #555;
+  background: #00e6d8;
+  opacity: 0.85;
+  color: #332;
+  border: solid 1px #222;
 }
 
 .number.badnum {

@@ -5,7 +5,9 @@ interface TileProps {
   x: number;
   y: number;
   value: number;
+  isFixed: boolean;
   isValid: boolean;
+  isFocused: boolean;
   isSelected: boolean;
   isHighlighted: boolean;
   onClick: () => void;
@@ -18,7 +20,9 @@ const Tile = memo(function Tile({
   y,
   value,
   onClick,
+  isFixed,
   isValid,
+  isFocused,
   isSelected,
   isHighlighted,
   onHover,
@@ -41,9 +45,11 @@ const Tile = memo(function Tile({
       className={`tile ${getBordersClassNames()}`}
     >
       <div
-        className={`tile-content ${isSelected ? "selected" : ""} ${
-          isHighlighted ? "highlight" : ""
-        } ${!isValid ? "invalid" : ""}`}
+        className={`tile-content ${isSelected ? "selected" : ""} 
+        ${isFixed ? "fixed" : ""} 
+        ${isFocused ? "focused" : ""} 
+        ${isHighlighted ? "highlight" : ""} 
+        ${!isValid ? "invalid" : ""}`}
       >
         <div className={`tile-number ${value === 0 ? "no-val" : ""}`}>
           {value > 0 ? value : ""}

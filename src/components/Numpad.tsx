@@ -6,6 +6,7 @@ interface Props {
   availableNums: Array<number>;
 }
 const Numpad = ({ onSet, currVal, availableNums }: Props) => {
+  // console.log("Numpad Rerender");
   return (
     <div className="numpad">
       {new Array(9).fill(null).map((_, i) => (

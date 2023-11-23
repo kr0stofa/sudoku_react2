@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import GameBoard from "./GameBoard";
 import { Board } from "./types";
 import "./sudoku.css";
@@ -27,6 +27,9 @@ const Sudoku = () => {
   const [autosolveTimeout, setAutosolveTimeout] = useState<number>();
   const [btnDisabled, setBtnDisabled] = useState<string>("");
   const [currBoard, setCurrBoard] = useState<Board>(getEmptyBoard());
+  const [fixedBoardNumbers, setFixedBoardNumbers] = useState<Board>(
+    getEmptyBoard()
+  );
   const [autoSolveDelay, setAutoSolveDelay] = useState<number>(500);
   const [prevBoard, setPrevBoard] = useState<Board>(getEmptyBoard());
   const [validBoard, setValidBoard] = useState<Board>(getEmptyBoard());
@@ -107,10 +110,6 @@ const Sudoku = () => {
     return nb;
   };
 
-  const clearNumber = (x: number, y: number, b: Board) => {
-    setNumber(x, y, 0, b);
-  };
-
   const handleSetValue = (tileId: number, val: number, b: Board) => {
     if (tileId < 0) {
       return;
@@ -120,15 +119,23 @@ const Sudoku = () => {
       return;
     }
 
+    const [x, y] = getTileFromId(tileId);
+
+    // Check if it is a puzzle piece
+    if (fixedBoardNumbers[y][x] > 0) {
+      return;
+    }
+
     // Capture previous board
     const pb = b.map((r) => [...r]);
     setPrevBoard(pb);
 
-    const [x, y] = getTileFromId(tileId);
-    // const v = isTileValid(x, y, val, pb);
-
     // Set the number
     return setNumber(x, y, val, b);
+  };
+
+  const clearNumber = (x: number, y: number, b: Board) => {
+    handleSetValue(getTileID(x, y), 0, b);
   };
 
   const handleSelectTile = (id: number) => {
@@ -190,6 +197,7 @@ const Sudoku = () => {
     }
 
     handleSelectTile(-1);
+    setFixedBoardNumbers(newPuzzle);
     setCurrBoard(newPuzzle);
   };
 
@@ -237,7 +245,7 @@ const Sudoku = () => {
         break;
     }
 
-    if (nx > 0) {
+    if (nx > -1) {
       // A move
       if (isInvalidCoords(nx, ny)) {
         return;
@@ -264,8 +272,9 @@ const Sudoku = () => {
   }, [isAutosolving, updateValidBoard, currBoard]);
 
   useEffect(() => {
-    setCurrBoard(puzzles.medium);
-  }, [setCurrBoard]);
+    setBoardToPuzzle(2);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const boardProps = {
     getTileValue: (x: number, y: number) => getTileValue(x, y, currBoard),
@@ -273,6 +282,7 @@ const Sudoku = () => {
     selectedTile,
     handleSelectTile,
     hoveredTile,
+    fixedBoardNumbers,
     setHoveredTile,
   };
 
