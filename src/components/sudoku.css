@@ -56,12 +56,6 @@
   background: rgba(201, 247, 95, 0.5);
 }
 
-.tile-content.focused {
-  background: rgba(50, 220, 250, 0.5);
-  color: #eed;
-  font-weight: 600;
-}
-
 .tile-content.selected {
   z-index: 1;
   background: rgba(50, 220, 250, 0.7);
@@ -74,17 +68,8 @@
   box-shadow: inset 0 0 2px 0 #d5d5d5, 0 0 1px 0 #252525;
 }
 
-.tile-content.invalid {
-  background: #e33;
-  color: #111;
-}
-
 .tile-content.fixed {
   background: #ccc;
-}
-
-.tile-content.invalid.fixed {
-  color: #e33;
 }
 
 .tile-content.fixed.highlight,
@@ -92,6 +77,27 @@
   z-index: 0;
   background: rgba(180, 205, 180, 0.7);
   color: #333;
+}
+
+.tile-content.invalid {
+  background: #e33;
+  color: #111;
+}
+
+.tile-content.invalid.fixed {
+  background: #aaa;
+  color: #e22;
+  box-shadow: inset 0 0 1px 3px #f22;
+}
+
+.tile-content.focused {
+  background: rgba(50, 220, 250, 0.5);
+  color: #ffffe5;
+  font-weight: 600;
+}
+
+.tile-content.focused.invalid {
+  color: #d11;
 }
 
 .tile-number {

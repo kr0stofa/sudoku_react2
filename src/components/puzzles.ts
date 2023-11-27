@@ -1,4 +1,17 @@
 import { Board } from "./types";
+
+const garena = [
+  "409253071",
+  "020981560",
+  "518607203",
+  "694070325",
+  "001302740",
+  "230495018",
+  "170504906",
+  "980016432",
+  "046800150",
+];
+
 const easy = [
   "702051900",
   "304920100",
@@ -48,7 +61,7 @@ const puzzleToBoard = (p: Array<string>) => {
 };
 
 export const puzzles = {
-  easy: puzzleToBoard(easy),
+  easy: puzzleToBoard(garena),
   medium: puzzleToBoard(medium),
   hard: puzzleToBoard(hard),
 };

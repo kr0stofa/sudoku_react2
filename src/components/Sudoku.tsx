@@ -7,13 +7,13 @@ import Numpad from "./Numpad";
 import { puzzles } from "./puzzles";
 import {
   getAvailableNumbersById,
-  getBestMove,
   getTileFromId,
   getTileID,
   getTileValue,
   getTileValueById,
   isBoardFilled,
   isInvalidCoords,
+  useAutoSolver,
 } from "./game-logic";
 
 const ROWS = 9;
@@ -144,12 +144,14 @@ const Sudoku = () => {
   };
 
   // ==================== Auto solver ====================
+
+  const autosolver = useAutoSolver();
   const doBestMove = (board: Board) => {
     if (isBoardFilled(board)) {
       return;
     }
 
-    const { tileId, val } = getBestMove(board);
+    const { tileId, val } = autosolver.getMove(board);
 
     handleSelectTile(tileId);
     return handleSetValue(tileId, val, board);
@@ -176,6 +178,7 @@ const Sudoku = () => {
       return;
     }
 
+    autosolver.startNewAttempt();
     setAutosolving(true);
     setBtnDisabled("disabled");
     autoSolve(currBoard);
@@ -272,7 +275,7 @@ const Sudoku = () => {
   }, [isAutosolving, updateValidBoard, currBoard]);
 
   useEffect(() => {
-    setBoardToPuzzle(2);
+    setBoardToPuzzle(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -286,20 +289,26 @@ const Sudoku = () => {
     setHoveredTile,
   };
 
+  const difficulties = [
+    ["Easy", 0],
+    ["Medium", 1],
+    ["Hard", 2],
+  ];
+
   return (
     <div tabIndex={0} className="sudoku" onKeyDown={handleKeyDown}>
       <GameBoard {...boardProps} />
       <div className="actions-group">
         <div className="puzzle-select">
-          <button className="btn-ui" onClick={() => setBoardToPuzzle(0)}>
-            Easy
-          </button>
-          <button className="btn-ui" onClick={() => setBoardToPuzzle(1)}>
-            Medium
-          </button>
-          <button className="btn-ui" onClick={() => setBoardToPuzzle(2)}>
-            Hard
-          </button>
+          {difficulties.map(([txt, puzzleId]) => (
+            <button
+              className={`btn-ui`}
+              disabled={isAutosolving}
+              onClick={() => setBoardToPuzzle(puzzleId as number)}
+            >
+              {txt}
+            </button>
+          ))}
         </div>
 
         <Numpad
@@ -312,7 +321,7 @@ const Sudoku = () => {
           <input
             disabled={isAutosolving}
             type="range"
-            min="50"
+            min="20"
             max="2500"
             value={autoSolveDelay}
             className="slider"
