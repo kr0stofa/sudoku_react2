@@ -126,6 +126,7 @@ export const useAutoSolver = () => {
     } as Action;
   };
 
+  // Todo: Heuristic for guessing
   const getBestMove = (b: Board, badAssignBoard: AvailBoard) => {
     let r = { tileId: -1, val: 1 } as Action;
 
