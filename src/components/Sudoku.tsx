@@ -22,9 +22,20 @@ const COLS = 9;
 const getEmptyBoard = () =>
   new Array(ROWS).fill(null).map(() => new Array(COLS).fill(0)) as Board;
 
-const Sudoku = () => {
-  const [isAutosolving, setAutosolving] = useState<boolean>(false);
+interface Args {
+  mobile: boolean;
+}
+
+const difficulties = [
+  ["Easy", 0],
+  ["Medium", 1],
+  ["Hard", 2],
+];
+
+const Sudoku = ({ mobile }: Args) => {
   const [autosolveTimeout, setAutosolveTimeout] = useState<number>();
+  const [isAutosolving, setAutosolving] = useState<boolean>(false);
+
   const [btnDisabled, setBtnDisabled] = useState<string>("");
   const [currBoard, setCurrBoard] = useState<Board>(getEmptyBoard());
   const [fixedBoardNumbers, setFixedBoardNumbers] = useState<Board>(
@@ -289,62 +300,81 @@ const Sudoku = () => {
     setHoveredTile,
   };
 
-  const difficulties = [
-    ["Easy", 0],
-    ["Medium", 1],
-    ["Hard", 2],
-  ];
+  // Sub-elements
+  const PuzzleSelector = () => {
+    return (
+      <div className="puzzle-select">
+        {difficulties.map(([txt, puzzleId]) => (
+          <button
+            className="btn-ui"
+            disabled={isAutosolving}
+            onClick={() => setBoardToPuzzle(puzzleId as number)}
+          >
+            {txt}
+          </button>
+        ))}
+      </div>
+    );
+  };
 
   return (
-    <div tabIndex={0} className="sudoku" onKeyDown={handleKeyDown}>
-      <GameBoard {...boardProps} />
-      <div className="actions-group">
-        <div className="puzzle-select">
-          {difficulties.map(([txt, puzzleId]) => (
-            <button
-              className={`btn-ui`}
-              disabled={isAutosolving}
-              onClick={() => setBoardToPuzzle(puzzleId as number)}
-            >
-              {txt}
-            </button>
-          ))}
-        </div>
+    <div
+      tabIndex={0}
+      className={`sudoku${mobile ? " mobile" : ""}`}
+      onKeyDown={handleKeyDown}
+    >
+      {mobile && <PuzzleSelector />}
 
+      <GameBoard {...boardProps} />
+
+      {!mobile && (
+        <div className="actions-group">
+          <PuzzleSelector />
+
+          <Numpad
+            availableNums={currAvailNums}
+            currVal={getTileValueById(selectedTile, currBoard)}
+            onSet={(v: number) => handleSetValue(selectedTile, v, currBoard)}
+          />
+
+          <div className="slidecontainer">
+            <input
+              disabled={isAutosolving}
+              type="range"
+              min="20"
+              max="2500"
+              value={autoSolveDelay}
+              className="slider"
+              id="myRange"
+              onChange={(e) => setAutoSolveDelay(parseInt(e.target.value))}
+            />
+            <span className="text-input-label">{autoSolveDelay}ms</span>
+
+            <button
+              className={`btn-ui btn-wide  ${btnDisabled}`}
+              onClick={handleAutoSolve}
+            >
+              {!isAutosolving ? "Auto Solve" : "Stop"}
+            </button>
+          </div>
+
+          <button
+            className={`btn-ui btn-wide ${btnDisabled}`}
+            onClick={clearBoard}
+          >
+            Clear Board
+          </button>
+        </div>
+      )}
+
+      {mobile && (
         <Numpad
           availableNums={currAvailNums}
           currVal={getTileValueById(selectedTile, currBoard)}
           onSet={(v: number) => handleSetValue(selectedTile, v, currBoard)}
+          mobile
         />
-
-        <div className="slidecontainer">
-          <input
-            disabled={isAutosolving}
-            type="range"
-            min="20"
-            max="2500"
-            value={autoSolveDelay}
-            className="slider"
-            id="myRange"
-            onChange={(e) => setAutoSolveDelay(parseInt(e.target.value))}
-          />
-          <span className="text-input-label">{autoSolveDelay}ms</span>
-
-          <button
-            className={`btn-ui btn-wide  ${btnDisabled}`}
-            onClick={handleAutoSolve}
-          >
-            {!isAutosolving ? "Auto Solve" : "Stop"}
-          </button>
-        </div>
-
-        <button
-          className={`btn-ui btn-wide ${btnDisabled}`}
-          onClick={clearBoard}
-        >
-          Clear Board
-        </button>
-      </div>
+      )}
     </div>
   );
 };

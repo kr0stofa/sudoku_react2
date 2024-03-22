@@ -12,17 +12,26 @@
   align-items: center;
   border: solid 1px #058;
   padding: 4% 2.5%;
+
+  .mobile & {
+    flex-direction: row;
+    justify-content: space-around;
+    height: 20vh;
+    width: 95%;
+    padding: 0 2vw;
+    align-items: top;
+    gap: 1vw 4vw;
+  }
 }
 
 .number {
   width: 8.5vh;
   height: 8.5vh;
-  margin: 3% 2%;
   border-radius: 50%;
   font-size: 40px;
   font-weight: 700;
   border: none;
-  opacity: 0.75;
+  opacity: 0.8;
   user-select: none;
   cursor: pointer;
   border: 1px #555 solid;
@@ -30,6 +39,13 @@
   color: #414143;
   font-family: Arial, Helvetica, sans-serif;
   font-size: calc(2px + 6vh);
+
+  .mobile & {
+    width: 11vw;
+    height: 11vw;
+    margin: 0;
+    font-size: calc(3px + 7vw);
+  }
 }
 
 .number:hover {
@@ -56,4 +72,9 @@
 
 .number.highlight.badnum {
   color: #a33;
+}
+
+.number.clear {
+  color: #fff;
+  background: #c11;
 }

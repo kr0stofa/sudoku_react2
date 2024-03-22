@@ -10,15 +10,27 @@ button {
   justify-content: center;
   background: radial-gradient(#e7e7e8, #eee);
   padding-left: 3%;
+
+  &.mobile {
+    height: auto;
+    min-height: 100vh;
+    padding: 0 5%;
+    padding-top: 8vh;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: none;
+    overflow-y: scroll;
+  }
 }
 
 .actions-group {
-  height: 100%;
+  height: 90vh;
   width: 45vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-between;
   position: relative;
+  gap: 1.5vh;
   padding: 3% 0;
   margin-left: 8%;
   font-size: calc(2px + 2vh);
@@ -32,18 +44,23 @@ button {
 
 .btn-ui {
   z-index: 1;
-  min-width: 95px;
+  min-width: 0.8vh;
   border: unset;
   border-radius: 10px;
-  margin: 0 5px;
   color: #212121;
-  padding: 3% 4%;
+  padding: 0.5vh 1vh;
   background: #f5f5f5;
   position: relative;
   font-weight: 800;
-  font-size: calc(2px + 2vh);
+  font-size: calc(3px + 2vh);
   transition: all 250ms;
-  overflow: hidden;
+  /* overflow: hidden; */
+  -webkit-tap-highlight-color: #56c7e6;
+
+  .mobile & {
+    font-size: calc(3px + 3vw);
+    padding: 1vw 2vw;
+  }
 }
 
 .btn-ui::before {
@@ -59,13 +76,20 @@ button {
   -webkit-box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
   box-shadow: 4px 8px 19px -3px rgba(0, 0, 0, 0.27);
   transition: all 250ms;
+
+  .mobile & {
+    transition-duration: 50ms;
+  }
 }
 
-.btn-ui:hover {
+.btn-ui:hover,
+.btn-ui:active {
   color: #f0f0f0;
+  transform: translate(0, 4%);
 }
 
-.btn-ui:hover::before {
+.btn-ui:hover::before,
+.btn-ui:active::before {
   width: 100%;
 }
 
@@ -74,10 +98,11 @@ button {
 }
 
 .puzzle-select {
+  position: relative;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   width: 100%;
-  padding: 1.5vh 0;
+  padding: 1vh 0;
   margin-bottom: 2vh;
   background: #f5f5f5;
   border: solid 1px #034078;
@@ -97,7 +122,7 @@ button {
 
 .slidecontainer {
   width: 90%;
-  margin: 3vh auto;
+  margin: 1vh auto;
   border-radius: 10px;
   border: solid 1px #034078;
   padding: 4% 8%;
@@ -106,12 +131,13 @@ button {
 
 .slidecontainer button {
   border: solid 1px #034078;
+  margin: 1.5vh 0 0.5vh;
   box-shadow: none;
 }
 
 .btn-wide {
   width: 90%;
-  margin: 20px auto 10px auto;
+  margin: 0 auto;
   font-size: calc(2px + 2vh);
   font-weight: bold;
 }
