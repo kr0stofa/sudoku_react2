@@ -8,6 +8,7 @@ button:focus {
 
 .App {
   text-align: center;
+  background: radial-gradient(#e7e7e8, #eee);
 }
 
 .App-logo {
@@ -27,7 +28,7 @@ button:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 1vmin);
+  font-size: calc(10px + 2vmin);
   color: #ddd;
   font-style: italic;
   box-shadow: 0 0 3vh 0.1vh #000;
@@ -41,6 +42,7 @@ button:focus {
     height: 3vh;
     background: #151515e0;
     backdrop-filter: blur(1px);
+    font-size: calc(6px + 2.5vmin);
   }
 }
 

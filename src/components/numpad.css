@@ -5,22 +5,23 @@
   margin: 2vh auto;
   display: flex;
   flex-wrap: wrap;
-  background: #f2f2f2;
+  background: #f0f2f0;
   flex-direction: column;
   justify-content: center;
   align-content: center;
   align-items: center;
-  border: solid 1px #058;
+  border: solid 0.3vh #222;
+  border-radius: 1vh;
   padding: 4% 2.5%;
 
   .mobile & {
     flex-direction: row;
     justify-content: space-around;
-    height: 20vh;
-    width: 95%;
-    padding: 0 2vw;
+    height: 27vw;
+    width: 98%;
+    padding: 0 7.5vw;
     align-items: top;
-    gap: 1vw 4vw;
+    gap: 2.5vw 3.2vw;
   }
 }
 
@@ -41,8 +42,8 @@
   font-size: calc(2px + 6vh);
 
   .mobile & {
-    width: 11vw;
-    height: 11vw;
+    width: 10vw;
+    height: 10vw;
     margin: 0;
     font-size: calc(3px + 7vw);
   }

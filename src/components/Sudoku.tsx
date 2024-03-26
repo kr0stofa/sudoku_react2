@@ -46,6 +46,7 @@ const Sudoku = ({ mobile }: Args) => {
   const [validBoard, setValidBoard] = useState<Board>(getEmptyBoard());
   const [selectedTile, setSelectedTile] = useState<number>(-1);
   const [hoveredTile, setHoveredTile] = useState<number>(-1);
+  const [difficulty, setDifficulty] = useState<number>(-1);
   const [currAvailNums, setCurrAvailNums] = useState<Array<number>>([]);
 
   // ==================== Tile Helper Functions ====================
@@ -98,6 +99,7 @@ const Sudoku = ({ mobile }: Args) => {
   // ==================== Mutators ====================
   const clearBoard = () => {
     setAutosolving(false);
+    setDifficulty(-1);
     setCurrBoard(getEmptyBoard());
   };
 
@@ -196,10 +198,11 @@ const Sudoku = ({ mobile }: Args) => {
   };
 
   // ==================== Game functions ====================
-  const setBoardToPuzzle = (difficulty: number) => {
+  const setBoardToPuzzle = (d: number) => {
     setPrevBoard(getEmptyBoard());
+    setDifficulty(d);
     let newPuzzle = [];
-    switch (difficulty) {
+    switch (d) {
       case 1:
         newPuzzle = puzzles.medium;
         break;
@@ -306,7 +309,9 @@ const Sudoku = ({ mobile }: Args) => {
       <div className="puzzle-select">
         {difficulties.map(([txt, puzzleId]) => (
           <button
-            className="btn-ui"
+            className={`btn-ui${
+              difficulty === (puzzleId as number) ? " active" : ""
+            }`}
             disabled={isAutosolving}
             onClick={() => setBoardToPuzzle(puzzleId as number)}
           >
